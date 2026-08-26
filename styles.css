@@ -6,10 +6,12 @@ html,body,#app { margin:0; min-height:100%; font-family:'Noto Serif KR Viewer', 
 button { font:inherit; color:inherit; cursor:pointer; }
 .screen { min-height:100dvh; max-width:480px; margin:auto; position:relative; overflow:hidden; }
 .cover-screen { background:#090909; color:#fff; }
+.cover-screen.is-loading > :not(.cover-reveal-mask) { opacity:0; }
+.cover-screen.is-ready > :not(.cover-reveal-mask) { opacity:1; transition:opacity .18s ease; }
 .cover-art { position:absolute; inset:0; background-color:#050505; background-image:url('assets/cover.jpg'); background-repeat:no-repeat; background-position:center top; background-size:100% auto; filter:saturate(.68) contrast(.92); }
 .cover-shade { position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,0) 54%,rgba(0,0,0,.04) 62%,rgba(0,0,0,.23) 70%,rgba(0,0,0,.78) 82%,#000 94%); }
 .age { position:absolute; top:30px; left:28px; font-size:20px; color:#7f252b; }
-.cover-logo-wrap { position:absolute; left:50%; top:50%; width:min(88%,422px); height:385px; transform:translate(-50%,-50%); overflow:hidden; }
+.cover-logo-wrap { position:absolute; left:50%; top:53%; width:min(88%,422px); height:385px; transform:translate(-50%,-50%); overflow:hidden; }
 .cover-logo { display:block; width:100%; height:auto; filter:none; }
 .cover-credit { position:absolute; z-index:1; top:72%; left:50%; transform:translateX(-50%); display:grid; justify-items:center; gap:12px; color:#fffaf5; font-size:19px; font-weight:400; text-shadow:0 1px 5px rgba(0,0,0,.9); }
 .cover-credit i { display:block; width:1px; height:25px; background:#6d1720; }
@@ -52,4 +54,21 @@ canvas { display:block; width:100%; height:auto; margin:0; padding:0; border:0; 
 .bottom-controls { font-family:'Noto Sans KR',Arial,sans-serif; font-size:15px; }.bottom-controls > button { display:flex; align-items:center; gap:9px; font-size:16px; }.bottom-controls > button:first-child,.bottom-controls > button:last-child { font-size:29px; font-family:Georgia,serif; }.bottom-controls span { font-family:'Noto Sans KR',Arial,sans-serif; font-size:15px; }
 .bottom-controls button:disabled { opacity:.3; cursor:default; }.zoom-controls { display:flex; gap:20px; align-items:center; }.zoom-controls button { font-size:33px; font-weight:200; }.zoom-controls span { min-width:46px; text-align:center; }
 @media (min-width:481px) { .cover-screen,.episodes-screen { min-height:100dvh; box-shadow:0 0 55px #000; } .pages { width:min(720px,calc(100vw - 30px)); } }
-@media (max-width:380px) { .cover-logo-wrap{height:275px}.cover-credit{top:67%}.episodes-screen { padding-left:24px; padding-right:24px; }.episode-row { grid-template-columns:112px 1fr 28px; min-height:165px; }.episode-number{font-size:106px}.episode-name{padding-left:18px;font-size:22px}.bottom-controls{padding-left:12px;padding-right:12px}.zoom-controls{gap:10px}.bottom-controls span{font-size:13px} }
+/* A mobile browser's address and navigation bars must not compress the cover layout. */
+@media (max-width:480px) {
+  .cover-screen { min-height:max(100dvh, calc(100vw * 2.12)); }
+  .cover-logo-wrap { top:53%; height:min(385px, 78vw); }
+  .cover-credit { top:74%; }
+  .start-button { left:22px; right:22px; bottom:32px; height:68px; }
+
+  .episodes-screen { min-height:100dvh; padding:58px 28px 22px; }
+  .back-simple { top:22px; left:22px; font-size:33px; }
+  .episodes-heading { margin:38px 0 35px; gap:12px; }
+  .episodes-heading span { font-size:14px; }
+  .episodes-heading strong { font-size:16px; }
+  .episode-row { min-height:132px; grid-template-columns:96px 1fr 27px; }
+  .episode-number { font-size:98px; }
+  .episode-name { padding-left:20px; font-size:21px; }
+  .episode-arrow { font-size:30px; }
+}
+@media (max-width:380px) { .cover-logo-wrap{height:275px}.episodes-screen { padding-left:22px; padding-right:22px; }.episode-row { grid-template-columns:90px 1fr 24px; min-height:126px; }.episode-number{font-size:91px}.episode-name{padding-left:16px;font-size:20px}.bottom-controls{padding-left:12px;padding-right:12px}.zoom-controls{gap:10px}.bottom-controls span{font-size:13px} }

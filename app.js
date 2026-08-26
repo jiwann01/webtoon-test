@@ -19,9 +19,22 @@ let currentIndex = 0, zoom = 1, renderId = 0, hideTimer;
 function showScreen(screen) {
   [coverScreen, episodesScreen, viewerScreen].forEach(item => item.hidden = item !== screen);
   window.scrollTo({ top: 0, behavior: 'instant' });
-  if (screen === coverScreen) playCoverReveal();
+  if (screen === coverScreen && coverScreen.classList.contains('is-ready')) playCoverReveal();
 }
 function playCoverReveal() { coverRevealMask.classList.remove('revealing'); void coverRevealMask.offsetWidth; coverRevealMask.classList.add('revealing'); }
+async function preloadImage(src) {
+  const image = new Image();
+  image.src = src;
+  try { await image.decode(); }
+  catch { await new Promise((resolve) => { image.onload = image.onerror = resolve; }); }
+}
+async function prepareCover() {
+  // 배경과 로고가 모두 준비된 뒤 표지를 한 번에 노출합니다.
+  await Promise.all([preloadImage('assets/cover.jpg'), preloadImage('assets/logo.png')]);
+  coverScreen.classList.remove('is-loading');
+  coverScreen.classList.add('is-ready');
+  requestAnimationFrame(playCoverReveal);
+}
 function buildEpisodeList() {
   $('#episode-list').replaceChildren(...episodes.map((episode, index) => {
     const button = document.createElement('button');
@@ -97,3 +110,4 @@ $('#zoom-in').addEventListener('click', () => changeZoom(.1)); $('#zoom-out').ad
 viewerScreen.addEventListener('click', viewerTap); viewerUI.addEventListener('pointerdown', () => clearTimeout(hideTimer)); viewerUI.addEventListener('pointerup', scheduleHide); viewerUI.addEventListener('pointercancel', scheduleHide);
 window.addEventListener('resize', () => { if (!viewerScreen.hidden) openEpisode(currentIndex, false); });
 showScreen(coverScreen);
+prepareCover();
