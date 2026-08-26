@@ -4,8 +4,8 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = './vendor/pdf.worker.mjs';
 
 // PDF 파일을 교체하거나 외부 스토리지 URL로 바꿀 때는 이 목록만 수정합니다.
 const episodes = [
-  { number: 1, title: '1화', imagePaths: Array.from({ length: 32 }, (_, index) => `episodes/episode-01/${String(index + 1).padStart(3, '0')}.jpg`) },
-  { number: 2, title: '2화', imagePaths: Array.from({ length: 22 }, (_, index) => `episodes/episode-02/${String(index + 1).padStart(3, '0')}.jpg`) },
+  { number: 1, title: '1화', imagePaths: Array.from({ length: 32 }, (_, index) => `episodes/episode-01/${String(index + 1).padStart(3, '0')}.jpg`), imageHeights: Array.from({ length: 32 }, (_, index) => index === 31 ? 6485 : 8000) },
+  { number: 2, title: '2화', imagePaths: Array.from({ length: 22 }, (_, index) => `episodes/episode-02/${String(index + 1).padStart(3, '0')}.jpg`), imageHeights: Array.from({ length: 22 }, (_, index) => index === 21 ? 4244 : 8000) },
   { number: 3, title: '3화', pdfPath: 'episodes/episode-03.pdf' },
 ];
 
@@ -83,6 +83,8 @@ async function openImageEpisode(episode, token) {
     const shell = document.createElement('div'); shell.className = 'page-shell';
     const image = new Image();
     image.className = 'episode-image'; image.alt = `${episode.title} ${index + 1}페이지`;
+    // 이미지가 아직 내려받아지기 전에도 높이를 확보해 스크롤 위치가 밀리지 않게 합니다.
+    image.width = 1080; image.height = episode.imageHeights[index];
     image.decoding = 'async'; image.loading = index === 0 ? 'eager' : 'lazy'; image.src = imagePath;
     shell.append(image); pages.append(shell);
     if (index === 0) {
