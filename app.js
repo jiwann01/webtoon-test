@@ -44,7 +44,11 @@ function buildEpisodeList() {
     return button;
   }));
 }
-function openEpisodes() { buildEpisodeList(); showScreen(episodesScreen); }
+async function openEpisodes() {
+  // 목차가 대체 폰트로 한 번 나타났다 바뀌지 않도록 폰트 준비 뒤에 표시합니다.
+  if (document.fonts?.ready) await document.fonts.ready;
+  buildEpisodeList(); showScreen(episodesScreen);
+}
 function selectEpisode(index) {
   currentIndex = index;
   document.querySelectorAll('.episode-row').forEach((row, rowIndex) => row.classList.toggle('selected', rowIndex === index));

@@ -1,6 +1,6 @@
 :root { --wine:#741c28; --black:#050505; --paper:#f7f5f2; }
-@font-face { font-family:'Bodoni Viewer'; src:url('assets/fonts/bodoni-moda.woff2') format('woff2'); font-weight:400 900; font-style:normal; font-display:swap; }
-@font-face { font-family:'Noto Serif KR Viewer'; src:url('assets/fonts/noto-serif-kr-300.woff2') format('woff2'); font-weight:300; font-style:normal; font-display:swap; }
+@font-face { font-family:'Bodoni Viewer'; src:url('assets/fonts/bodoni-moda.woff2') format('woff2'); font-weight:100 900; font-style:normal; font-display:block; }
+@font-face { font-family:'Noto Serif KR Viewer'; src:url('assets/fonts/noto-serif-kr-300.woff2') format('woff2'); font-weight:300; font-style:normal; font-display:block; }
 * { box-sizing:border-box; }
 html,body,#app { margin:0; min-height:100%; font-family:'Noto Serif KR Viewer', 'Batang', serif; background:#050505; }
 button { font:inherit; color:inherit; cursor:pointer; }
@@ -19,14 +19,15 @@ button { font:inherit; color:inherit; cursor:pointer; }
 .start-button span { font-size:31px; font-weight:200; }
 .cover-reveal-mask { position:absolute; z-index:5; inset:0; background:#000; pointer-events:none; opacity:0; clip-path:inset(100% 0 0 0); }
 .cover-reveal-mask.revealing { opacity:1; animation:top-to-bottom-reveal 1.08s cubic-bezier(.18,.76,.2,1) both; }
-.episodes-screen { background:#faf9f7; color:#111; padding:76px 36px 40px; }
+.episodes-screen { background:#faf9f7; color:#111; padding:76px 36px 40px; display:flex; flex-direction:column; }
 .back-simple { position:absolute; left:26px; top:27px; border:0; background:transparent; font-size:37px; font-weight:200; line-height:1; }
 .episodes-heading { margin:50px 0 68px; display:grid; gap:18px; }
+.episode-list { flex:1; display:grid; grid-template-rows:repeat(3, minmax(0, 1fr)); }
 .episodes-heading span { color:var(--wine); font-size:16px; letter-spacing:.34em; }
 .episodes-heading strong { font-size:18px; font-weight:300; letter-spacing:-.09em; }
-.episode-row { width:100%; min-height:202px; border:0; border-top:1px solid #bbb7b4; background:transparent; display:grid; grid-template-columns:142px 1fr 35px; align-items:center; text-align:left; padding:0; }
+.episode-row { width:100%; min-height:202px; height:100%; border:0; border-top:1px solid #bbb7b4; background:transparent; display:grid; grid-template-columns:142px 1fr 35px; align-items:center; text-align:left; padding:0; }
 .episode-row:first-child { border-top:0; }
-.episode-number { font-family:'Bodoni Viewer', Didot, 'Bodoni MT', serif; font-size:142px; font-weight:400; letter-spacing:-.13em; line-height:.76; transform:scaleX(.80); transform-origin:left center; }
+.episode-number { font-family:'Bodoni Viewer', Didot, 'Bodoni MT', serif; font-size:142px; font-weight:220; font-variation-settings:'wght' 220; letter-spacing:-.13em; line-height:.76; transform:scaleX(.72); transform-origin:left center; }
 .episode-name { border-left:1px solid #c8c3c0; padding-left:30px; font-family:'Noto Serif KR Viewer','Batang',serif; font-size:25px; font-weight:300; letter-spacing:-.1em; }
 .episode-arrow { color:var(--wine); font-size:37px; text-align:right; font-weight:200; }
 .episode-row.selected .episode-number,.episode-row.selected .episode-name,.episode-row.selected .episode-arrow { color:var(--wine); }
@@ -64,11 +65,12 @@ canvas,.episode-image { display:block; width:100%; height:auto; margin:0; paddin
   .episodes-screen { min-height:100dvh; padding:58px 28px 22px; }
   .back-simple { top:22px; left:22px; font-size:33px; }
   .episodes-heading { margin:38px 0 35px; gap:12px; }
+  .episode-list { grid-template-rows:repeat(3, minmax(150px, 1fr)); }
   .episodes-heading span { font-size:14px; }
   .episodes-heading strong { font-size:16px; }
-  .episode-row { min-height:132px; grid-template-columns:96px 1fr 27px; }
-  .episode-number { font-size:98px; }
-  .episode-name { padding-left:20px; font-size:21px; }
+  .episode-row { min-height:155px; grid-template-columns:112px 1fr 27px; }
+  .episode-number { font-size:118px; font-weight:220; font-variation-settings:'wght' 220; transform:scaleX(.72); }
+  .episode-name { padding-left:24px; font-size:22px; }
   .episode-arrow { font-size:30px; }
 }
-@media (max-width:380px) { .cover-logo-wrap{height:275px}.episodes-screen { padding-left:22px; padding-right:22px; }.episode-row { grid-template-columns:90px 1fr 24px; min-height:126px; }.episode-number{font-size:91px}.episode-name{padding-left:16px;font-size:20px}.bottom-controls{padding-left:12px;padding-right:12px}.zoom-controls{gap:10px}.bottom-controls span{font-size:13px} }
+@media (max-width:380px) { .cover-logo-wrap{height:275px}.episodes-screen { padding-left:22px; padding-right:22px; }.episode-list { grid-template-rows:repeat(3, minmax(150px, 1fr)); }.episode-row { grid-template-columns:106px 1fr 24px; min-height:150px; }.episode-number{font-size:112px;font-weight:220;font-variation-settings:'wght' 220;transform:scaleX(.72)}.episode-name{padding-left:20px;font-size:21px}.bottom-controls{padding-left:12px;padding-right:12px}.zoom-controls{gap:10px}.bottom-controls span{font-size:13px} }
