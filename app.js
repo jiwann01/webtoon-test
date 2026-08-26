@@ -4,8 +4,8 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = './vendor/pdf.worker.mjs';
 
 // PDF 파일을 교체하거나 외부 스토리지 URL로 바꿀 때는 이 목록만 수정합니다.
 const episodes = [
-  { number: 1, title: '1화', pdfPath: 'episodes/episode-01.pdf' },
-  { number: 2, title: '2화', pdfPath: 'episodes/episode-02.pdf' },
+  { number: 1, title: '1화', imagePaths: Array.from({ length: 32 }, (_, index) => `episodes/episode-01/${String(index + 1).padStart(3, '0')}.jpg`) },
+  { number: 2, title: '2화', imagePaths: Array.from({ length: 22 }, (_, index) => `episodes/episode-02/${String(index + 1).padStart(3, '0')}.jpg`) },
   { number: 3, title: '3화', pdfPath: 'episodes/episode-03.pdf' },
 ];
 
@@ -64,12 +64,42 @@ function hideUI() { viewerUI.classList.remove('visible'); viewerUI.setAttribute(
 function scheduleHide() { clearTimeout(hideTimer); hideTimer = setTimeout(hideUI, 3200); }
 function viewerTap(event) { if (event.target.closest('button')) return; viewerUI.classList.contains('visible') ? hideUI() : showUI(); }
 function pageWidth() { return Math.min(window.innerWidth, 720) * zoom; }
+function waitForImage(image) {
+  if (image.complete && image.naturalWidth) return Promise.resolve();
+  return new Promise((resolve, reject) => { image.onload = resolve; image.onerror = reject; });
+}
+function revealFirstPage(token) {
+  loading.hidden = true;
+  requestAnimationFrame(() => {
+    if (token !== renderId) return;
+    pages.classList.remove('is-preparing'); pages.classList.remove('reveal');
+    void revealMask.offsetWidth;
+    revealMask.classList.add('revealing');
+  });
+}
+async function openImageEpisode(episode, token) {
+  for (const [index, imagePath] of episode.imagePaths.entries()) {
+    if (token !== renderId) return;
+    const shell = document.createElement('div'); shell.className = 'page-shell';
+    const image = new Image();
+    image.className = 'episode-image'; image.alt = `${episode.title} ${index + 1}페이지`;
+    image.decoding = 'async'; image.loading = index === 0 ? 'eager' : 'lazy'; image.src = imagePath;
+    shell.append(image); pages.append(shell);
+    if (index === 0) {
+      await waitForImage(image);
+      if (token !== renderId) return;
+      revealFirstPage(token);
+    }
+  }
+}
 async function openEpisode(index, resetZoom = true) {
   currentIndex = index; if (resetZoom) zoom = 1; updateControls(); showScreen(viewerScreen); hideUI();
   const token = ++renderId; revealMask.classList.remove('revealing'); pages.replaceChildren(); pages.style.width = `${pageWidth()}px`; pages.classList.remove('reveal'); pages.classList.add('is-preparing');
   loading.hidden = false; error.hidden = true;
   try {
-    const pdf = await pdfjsLib.getDocument(episodes[index].pdfPath).promise;
+    const episode = episodes[index];
+    if (episode.imagePaths) { await openImageEpisode(episode, token); return; }
+    const pdf = await pdfjsLib.getDocument(episode.pdfPath).promise;
     if (token !== renderId) return;
     const targetWidth = pageWidth();
     for (let number = 1; number <= pdf.numPages; number++) {
@@ -82,14 +112,7 @@ async function openEpisode(index, resetZoom = true) {
       await page.render({ canvasContext: canvas.getContext('2d', { alpha: false }), viewport }).promise;
       shell.style.height = 'auto';
       if (number === 1) {
-        loading.hidden = true;
-        requestAnimationFrame(() => {
-          if (token !== renderId) return;
-          pages.classList.remove('is-preparing'); pages.classList.remove('reveal');
-          // 검정 레이어가 상단부터 아래로 열리며 첫 원고를 드러냅니다.
-          void revealMask.offsetWidth;
-          revealMask.classList.add('revealing');
-        });
+        revealFirstPage(token);
       }
     }
     loading.hidden = true;

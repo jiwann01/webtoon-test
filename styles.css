@@ -37,7 +37,7 @@ button { font:inherit; color:inherit; cursor:pointer; }
 .pages.reveal { animation:reveal 1.18s cubic-bezier(.16,.78,.2,1) both; }
 @keyframes reveal { from { clip-path:inset(0 0 100% 0); opacity:.3; transform:translateY(-14px); } to { clip-path:inset(0); opacity:1; transform:translateY(0); } }
 .page-shell { width:100%; line-height:0; background:#000; }
-canvas { display:block; width:100%; height:auto; margin:0; padding:0; border:0; }
+canvas,.episode-image { display:block; width:100%; height:auto; margin:0; padding:0; border:0; }
 .loading,.error { position:fixed; top:50%; left:50%; transform:translate(-50%,-50%); margin:0; color:#d6d0cd; font-size:13px; letter-spacing:.06em; }
 .error { color:#dfbcc1; text-align:center; line-height:1.7; }
 .reveal-mask { position:fixed; z-index:3; inset:0; background:#000; pointer-events:none; opacity:0; clip-path:inset(100% 0 0 0); }
