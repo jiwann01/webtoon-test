@@ -1,0 +1,13 @@
+{
+  "name": "webtoon-viewer-test",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "build": "node scripts/build.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/bodoni-moda": "^5.3.0",
+    "@fontsource/noto-serif-kr": "^5.3.0",
+    "pdfjs-dist": "5.5.207"
+  }
+}
