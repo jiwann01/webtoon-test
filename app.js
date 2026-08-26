@@ -14,7 +14,7 @@ const coverScreen = $('#cover-screen'), episodesScreen = $('#episodes-screen'), 
 const pages = $('#pages'), loading = $('#loading'), error = $('#error'), viewerUI = $('#viewer-ui');
 const revealMask = $('#reveal-mask');
 const coverRevealMask = $('#cover-reveal-mask');
-let currentIndex = 0, zoom = 1, renderId = 0, hideTimer;
+let currentIndex = 0, zoom = 1, renderId = 0, hideTimer, lastViewportWidth = window.innerWidth;
 
 function showScreen(screen) {
   [coverScreen, episodesScreen, viewerScreen].forEach(item => item.hidden = item !== screen);
@@ -133,6 +133,12 @@ $('#prev-button').addEventListener('click', () => currentIndex && openEpisode(cu
 $('#next-button').addEventListener('click', () => currentIndex < episodes.length - 1 && openEpisode(currentIndex + 1));
 $('#zoom-in').addEventListener('click', () => changeZoom(.1)); $('#zoom-out').addEventListener('click', () => changeZoom(-.1));
 viewerScreen.addEventListener('click', viewerTap); viewerUI.addEventListener('pointerdown', () => clearTimeout(hideTimer)); viewerUI.addEventListener('pointerup', scheduleHide); viewerUI.addEventListener('pointercancel', scheduleHide);
-window.addEventListener('resize', () => { if (!viewerScreen.hidden) openEpisode(currentIndex, false); });
+window.addEventListener('resize', () => {
+  // 모바일 브라우저의 주소창이 접히고 펴질 때는 높이만 변합니다.
+  // 이때 원고를 다시 열면 스크롤이 첫 페이지로 돌아가므로, 가로 폭 변화만 처리합니다.
+  const widthChanged = Math.abs(window.innerWidth - lastViewportWidth) > 20;
+  lastViewportWidth = window.innerWidth;
+  if (!viewerScreen.hidden && widthChanged) openEpisode(currentIndex, false);
+});
 showScreen(coverScreen);
 prepareCover();
