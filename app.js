@@ -6,7 +6,7 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = './vendor/pdf.worker.mjs';
 const episodes = [
   { number: 1, title: '1화', imagePaths: Array.from({ length: 32 }, (_, index) => `episodes/episode-01/${String(index + 1).padStart(3, '0')}.jpg`), imageHeights: Array.from({ length: 32 }, (_, index) => index === 31 ? 6485 : 8000) },
   { number: 2, title: '2화', imagePaths: Array.from({ length: 22 }, (_, index) => `episodes/episode-02/${String(index + 1).padStart(3, '0')}.jpg`), imageHeights: Array.from({ length: 22 }, (_, index) => index === 21 ? 4244 : 8000) },
-  { number: 3, title: '3화', pdfPath: 'episodes/episode-03.pdf' },
+  { number: 3, title: '3화', imagePaths: Array.from({ length: 20 }, (_, index) => `episodes/episode-03/${String(index + 1).padStart(3, '0')}.jpg`), imageHeights: Array.from({ length: 20 }, (_, index) => index === 19 ? 4805 : 8000) },
 ];
 
 const $ = (selector) => document.querySelector(selector);
