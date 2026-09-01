@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#050505">
+  <title>우리 정말 진하게 사랑하게 돼</title>
+  <link rel="preload" href="../../assets/fonts/bodoni-moda.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="../../assets/fonts/noto-serif-kr-300.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main id="app">
+    <section id="cover-screen" class="screen cover-screen is-loading" aria-label="표지">
+      <div class="cover-art"></div>
+      <div class="cover-shade"></div>
+      <div class="age">19+</div>
+      <div class="cover-logo-wrap"><img class="cover-logo" src="../../assets/logo.png" alt="우리 정말 진하게 사랑하게 돼"></div>
+      <div class="cover-credit" aria-label="작가 지완"><i></i><span>지완</span><i></i></div>
+      <button id="start-button" class="start-button">작품 시작하기 <span aria-hidden="true">→</span></button>
+      <div id="cover-reveal-mask" class="cover-reveal-mask" aria-hidden="true"></div>
+    </section>
+
+    <section id="episodes-screen" class="screen episodes-screen" hidden aria-label="회차 선택">
+      <button class="back-simple" data-go="cover" aria-label="표지로 돌아가기">←</button>
+      <div class="episodes-heading"><span>EPISODES</span><strong>지완</strong></div>
+      <div id="episode-list" class="episode-list"></div>
+    </section>
+
+    <section id="viewer-screen" class="viewer-screen" hidden aria-label="웹툰 감상">
+      <div id="viewer-content" class="viewer-content">
+        <div id="pages" class="pages" aria-live="polite"></div>
+        <p id="loading" class="loading">원고를 불러오는 중</p>
+        <p id="error" class="error" hidden></p>
+      </div>
+      <div id="reveal-mask" class="reveal-mask" aria-hidden="true"></div>
+      <div id="viewer-ui" class="viewer-ui" aria-hidden="true">
+        <header class="top-controls controls-panel">
+          <button id="viewer-back" aria-label="회차 목록으로 돌아가기">←</button>
+          <div><strong id="current-title">1화</strong><span id="current-count">01 / 03</span></div>
+          <button id="episode-menu">회차목록</button>
+        </header>
+        <footer class="bottom-controls controls-panel">
+          <button id="prev-button">‹ <span>이전화</span></button>
+          <div class="zoom-controls"><button id="zoom-out" aria-label="축소">−</button><span id="zoom-value">100%</span><button id="zoom-in" aria-label="확대">＋</button></div>
+          <button id="next-button"><span>다음화</span> ›</button>
+        </footer>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
